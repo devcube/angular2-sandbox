@@ -41,7 +41,7 @@ module.exports = {
 
   // Config for our build files
   output: {
-    path: 'dist',
+    path: root('dist'),
     filename: '[name].[chunkhash].bundle.js',
     sourceMapFilename: '[name].[chunkhash].bundle.map',
     chunkFilename: '[id].[chunkhash].chunk.js'
@@ -59,14 +59,14 @@ module.exports = {
         test: /\.ts$/,
         loader: 'tslint-loader',
         exclude: [
-          'node_modules'
+          root('node_modules')
         ]
       },
       {
         test: /\.js$/,
         loader: "source-map-loader",
         exclude: [
-          'node_modules/rxjs'
+          root('node_modules/rxjs')
         ]
       }
     ],
@@ -188,6 +188,11 @@ module.exports = {
 // Helper functions
 function gzipMaxLevel(buffer, callback) {
   return zlib['gzip'](buffer, {level: 9}, callback)
+}
+
+function root(args) {
+  args = Array.prototype.slice.call(arguments, 0);
+  return path.join.apply(path, [__dirname].concat(args));
 }
 
 function prepend(extensions, args) {
