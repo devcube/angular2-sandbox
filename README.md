@@ -11,3 +11,4 @@ Angular2 Sandbox
  * Bootstrap3 (bootstrap4 and ng2-material are in too early stages atm)
  * jQuery
  * Extended with an MVC6 server (maybe delete node server code?)
+ * Sweet alerts?
