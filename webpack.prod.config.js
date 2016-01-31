@@ -1,6 +1,5 @@
 var path = require('path');
 var zlib = require('zlib');
-// Webpack Plugins
 var webpack = require('webpack');
 var ProvidePlugin = require('webpack/lib/ProvidePlugin');
 var DefinePlugin = require('webpack/lib/DefinePlugin');
@@ -11,7 +10,8 @@ var CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin');
 var CompressionPlugin = require('compression-webpack-plugin');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
-var WebpackMd5Hash    = require('webpack-md5-hash');
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var WebpackMd5Hash = require('webpack-md5-hash');
 var ENV = process.env.NODE_ENV = process.env.ENV = 'production';
 var HOST = process.env.HOST || 'localhost';
 var PORT = process.env.PORT || 8080;
@@ -24,9 +24,6 @@ var metadata = {
   ENV: ENV
 };
 
-/*
- * Config
- */
 module.exports = {
   // static data for index.html
   metadata: metadata,
@@ -35,8 +32,8 @@ module.exports = {
   debug: false,
 
   entry: {
-    'polyfills':'./src/polyfills.ts',
-    'main':'./src/main.ts' // our angular app
+    'polyfills': './src/polyfills.ts',
+    'main': './src/main.ts' // our angular app
   },
 
   // Config for our build files
@@ -49,8 +46,7 @@ module.exports = {
 
   resolve: {
     cache: false,
-    // ensure loader extensions match
-    extensions: prepend(['.ts','.js','.json','.css','.html'], '.async') // ensure .async.ts etc also works
+    extensions: prepend(['.ts', '.js', '.json', '.css', '.html', '.ttf', '.eot', '.svg', '.woff', '.woff2'], '.async') // ensure .async.ts etc also works
   },
 
   module: {
@@ -75,7 +71,7 @@ module.exports = {
       {
         test: /\.async\.ts$/,
         loaders: ['es6-promise-loader', 'ts-loader'],
-        exclude: [ /\.(spec|e2e)\.ts$/ ]
+        exclude: [/\.(spec|e2e)\.ts$/]
       },
       // Support for .ts files.
       {
@@ -88,17 +84,23 @@ module.exports = {
             'noEmitHelpers': true,
           }
         },
-        exclude: [ /\.(spec|e2e|async)\.ts$/ ]
+        exclude: [/\.(spec|e2e|async)\.ts$/]
       },
 
       // Support for *.json files.
-      { test: /\.json$/,  loader: 'json-loader' },
+      { test: /\.json$/, loader: 'json-loader' },
 
       // Support for CSS as raw text
-      { test: /\.css$/,   loader: 'raw-loader' },
+      { test: /\.css$/, loader: 'raw-loader', include: [ root('src/app') ] },
+
+      // Support for CSS as loaded/bundled files (this is useful to cover all css files that aren't included otherwise, such as bootstrap.css)
+      { test: /\.css$/, loader: ExtractTextPlugin.extract("style-loader", "css-loader"), exclude: [ root('src/app') ] },
 
       // support for .html as raw text
-      { test: /\.html$/,  loader: 'raw-loader' }
+      { test: /\.html$/, loader: 'raw-loader' },
+
+      // support for these files from e.g. bootstrap
+      { test: /\.(ttf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/, loader: 'file-loader' }
 
       // if you add a loader include the file extension
     ]
@@ -113,25 +115,27 @@ module.exports = {
       filename: 'polyfills.[chunkhash].bundle.js',
       chunks: Infinity
     }),
-    // static assets
+    new ExtractTextPlugin("styles.css"),
     new CopyWebpackPlugin([
       {
         from: 'src/assets',
         to: 'assets'
       }
     ]),
-    // generating html
     new HtmlWebpackPlugin({
-      template: 'src/index.html'
+      template: 'src/index.html',
+      hash: true
     }),
     new DefinePlugin({
-      // Environment helpers
       'process.env': {
         'ENV': JSON.stringify(metadata.ENV),
         'NODE_ENV': JSON.stringify(metadata.ENV)
       }
     }),
     new ProvidePlugin({
+      jQuery: 'jquery',
+      $: 'jquery',
+      jquery: 'jquery',
       // TypeScript helpers
       '__metadata': 'ts-helper/metadata',
       '__decorate': 'ts-helper/decorate',
@@ -141,26 +145,15 @@ module.exports = {
       'Reflect': 'es7-reflect-metadata/src/global/browser'
     }),
     new UglifyJsPlugin({
-      // to debug prod builds uncomment //debug lines and comment //prod lines
-
-      // beautify: true,//debug
-      // mangle: false,//debug
-      // dead_code: false,//debug
-      // unused: false,//debug
-      // deadCode: false,//debug
-      // compress : { screw_ie8 : true, keep_fnames: true, drop_debugger: false, dead_code: false, unused: false, }, // debug
-      // comments: true,//debug
-
-      beautify: false,//prod
+      beautify: false,
       // disable mangling because of a bug in angular2 beta.1 and beta.2
       // TODO(mastertinner): enable mangling as soon as angular2 beta.3 is out
-      // mangle: { screw_ie8 : true },//prod
+      // mangle: { screw_ie8 : true },
       mangle: false,
-      compress : { screw_ie8 : true},//prod
-      comments: false//prod
+      compress: { screw_ie8: true },
+      comments: false
 
     }),
-   // include uglify in production
     new CompressionPlugin({
       algorithm: gzipMaxLevel,
       regExp: /\.css$|\.html$|\.js$|\.map$/,
@@ -187,7 +180,7 @@ module.exports = {
 
 // Helper functions
 function gzipMaxLevel(buffer, callback) {
-  return zlib['gzip'](buffer, {level: 9}, callback)
+  return zlib['gzip'](buffer, { level: 9 }, callback)
 }
 
 function root(args) {
@@ -198,8 +191,8 @@ function root(args) {
 function prepend(extensions, args) {
   args = args || [];
   if (!Array.isArray(args)) { args = [args] }
-  return extensions.reduce(function(memo, val) {
-    return memo.concat(val, args.map(function(prefix) {
+  return extensions.reduce(function (memo, val) {
+    return memo.concat(val, args.map(function (prefix) {
       return prefix + val
     }));
   }, ['']);
