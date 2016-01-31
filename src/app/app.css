@@ -1,0 +1,8 @@
+.mainContent {
+  padding: 20px;
+}
+
+.router-link-active {
+  color: cyan !important;
+}
+

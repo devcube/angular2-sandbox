@@ -10,7 +10,11 @@ console.log('`About` component loaded asynchronously');
 
 @Component({
   selector: 'about',
-  template: `devcube`
+  template: `
+This sandbox is maintained by devcube, the foundation is taken from
+<a href="https://github.com/AngularClass/angular2-webpack-starter">
+AngularClass/angular2-webpack-starter
+</a> - Thanks!`
 })
 export class About {
   constructor() {
@@ -18,7 +22,7 @@ export class About {
   }
 
   ngOnInit() {
-    console.log('hello `About` component');
+    console.log('Hello `About` component');
   }
 
 }

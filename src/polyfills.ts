@@ -135,5 +135,11 @@ if ('production' === process.env.ENV) {
   require('rxjs/add/operator/zipAll');
 }
 
-// For vendors for example jQuery, Lodash, angular2-jwt just import them anywhere in your app
-// Also see custom_typings.d.ts as you also need to do `typings install x` where `x` is your module
+// For vendors for example jQuery, Lodash, angular2-jwt
+// Import them in polyfills.ts to bundle all polyfills and vendors in the same chunk
+// This helps us keep the app bundle as small as possible, thus maximizing cache effectiveness
+
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/js/bootstrap.js';
+import 'jquery/dist/jquery.js';
+require('./assets/css/global.css');
