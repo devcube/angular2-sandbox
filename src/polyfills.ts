@@ -142,4 +142,4 @@ if ('production' === process.env.ENV) {
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.js';
 import 'jquery/dist/jquery.js';
-require('./assets/css/global.css');
+import './assets/css/global.css';

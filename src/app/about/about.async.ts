@@ -1,4 +1,5 @@
 import {Component} from 'angular2/core';
+import {Http} from 'angular2/http';
 
 /*
  * We're loading this component asynchronously
@@ -10,19 +11,20 @@ console.log('`About` component loaded asynchronously');
 
 @Component({
   selector: 'about',
-  template: `
-This sandbox is maintained by devcube, the foundation is taken from
-<a href="https://github.com/AngularClass/angular2-webpack-starter">
-AngularClass/angular2-webpack-starter
-</a> - Thanks!`
+  template: require('./about.html')
 })
 export class About {
-  constructor() {
+  readmeContents: string;
 
+  constructor(public http: Http) {
+    var marked = require('marked');
+    this.http.get('https://raw.githubusercontent.com/devcube/angular2-sandbox/master/README.md')
+             .map(res => res.text()).subscribe(
+                  data => this.readmeContents = marked(data),
+                  err => console.log('Error occurred while fetching README.md: ' + err));
   }
 
   ngOnInit() {
-    console.log('Hello `About` component');
   }
 
 }
