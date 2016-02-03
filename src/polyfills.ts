@@ -141,5 +141,10 @@ if ('production' === process.env.ENV) {
 
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.js';
+
 import 'jquery/dist/jquery.js';
+
+import 'sweetalert/lib/sweetalert.js';
+import 'sweetalert/dist/sweetalert.css';
+
 import './assets/css/global.css';

@@ -15,10 +15,15 @@ import {XLarge} from './directives/x-large';
   styles: [ require('./home.css') ],
   template: require('./home.html')
 })
+
 export class Home {
   data = { value: '' };
 
   constructor(public title: Title) {
+  }
+
+  swalTest(event) {
+    swal('Good job!', 'You clicked the button!', 'success');
   }
 
   ngOnInit() {

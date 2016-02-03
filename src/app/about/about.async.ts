@@ -13,6 +13,7 @@ console.log('`About` component loaded asynchronously');
   selector: 'about',
   template: require('./about.html')
 })
+
 export class About {
   readmeContents: string;
 
