@@ -1,7 +1,5 @@
 using Microsoft.AspNet.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Text.RegularExpressions;
 using angular2sandbox.Models;
 
 namespace angular2sandbox.Controllers

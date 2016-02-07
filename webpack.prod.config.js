@@ -38,7 +38,7 @@ module.exports = {
 
   // Config for our build files
   output: {
-    path: root('dist'),
+    path: root('server/wwwroot'),
     filename: '[name].[chunkhash].bundle.js',
     chunkFilename: '[id].[chunkhash].chunk.js'
   },

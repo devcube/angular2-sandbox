@@ -4,9 +4,9 @@
   "private": true,
   "homepage": "https://github.com/devcube/angular2-sandbox",
   "scripts": {
-    "clean:dist": "rimraf dist",
+    "clean:wwwroot": "rimraf server/wwwroot",
     "build:dev": "webpack --progress --profile --colors --display-error-details --display-cached",
-    "prebuild:prod": "npm run clean:dist",
+    "prebuild:prod": "npm run clean:wwwroot",
     "build:prod": "webpack --config webpack.prod.config.js --progress --profile --colors --display-error-details --display-cached",
     "stats:prod": "webpack --config webpack.prod.config.js --profile --json > webpack.json",
     "server:dev": "webpack-dev-server --progress --profile --colors --display-error-details --display-cached  --content-base src/",

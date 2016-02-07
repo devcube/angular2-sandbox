@@ -1,5 +1,4 @@
 using Microsoft.AspNet.Builder;
-using Microsoft.AspNet.StaticFiles;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
