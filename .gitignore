@@ -1,6 +1,10 @@
+# gitkeep (http://stackoverflow.com/questions/987142/make-gitignore-ignore-everything-except-a-few-files)
+!.gitkeep
+
 # ASP.NET Core
 project.lock.json
-server/wwwroot
+server/wwwroot/*
+!server/wwwroot/.gitkeep
 
 # Webpack
 webpack.json
