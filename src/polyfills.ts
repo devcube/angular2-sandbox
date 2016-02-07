@@ -149,4 +149,6 @@ import 'jquery/dist/jquery.js';
 import 'sweetalert/lib/sweetalert.js';
 import 'sweetalert/dist/sweetalert.css';
 
+import 'marked/lib/marked.js';
+
 import './assets/css/global.css';

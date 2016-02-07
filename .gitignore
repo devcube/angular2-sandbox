@@ -1,5 +1,9 @@
 # ASP.NET Core
 project.lock.json
+server/wwwroot
+
+# Webpack
+webpack.json
 
 # Logs
 logs

@@ -28,19 +28,18 @@ module.exports = {
   // static data for index.html
   metadata: metadata,
   // for faster builds use 'eval'
-  devtool: 'source-map',
+  devtool: 'eval',
   debug: false,
 
   entry: {
     'polyfills': './src/polyfills.ts',
-    'main': './src/main.ts' // our angular app
+    'main': './src/main.ts'
   },
 
   // Config for our build files
   output: {
     path: root('dist'),
     filename: '[name].[chunkhash].bundle.js',
-    sourceMapFilename: '[name].[chunkhash].bundle.map',
     chunkFilename: '[id].[chunkhash].chunk.js'
   },
 
@@ -152,7 +151,6 @@ module.exports = {
       mangle: false,
       compress: { screw_ie8: true },
       comments: false
-
     }),
     new CompressionPlugin({
       algorithm: gzipMaxLevel,

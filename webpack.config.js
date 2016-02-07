@@ -22,7 +22,10 @@ module.exports = {
   debug: true,
   // cache: false,
 
-  entry: { 'polyfills': './src/polyfills.ts', 'main': './src/main.ts' },
+  entry: {
+    'polyfills': './src/polyfills.ts',
+    'main': './src/main.ts'
+  },
 
   output: {
     path: root('dist'),
