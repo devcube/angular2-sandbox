@@ -15,9 +15,16 @@ console.log('`About` component loaded asynchronously');
 })
 
 export class About {
+  serverSideValue: string;
   readmeContents: string;
 
   constructor(public http: Http) {
+      this.http.get('/api/test/test')
+      .map(res => res.text()).subscribe(
+                  data => this.serverSideValue = data,
+                  err => console.log('Error occurred while contacting api: ' + err));
+
+
     var marked = require('marked');
     this.http.get('https://raw.githubusercontent.com/devcube/angular2-sandbox/master/README.md')
              .map(res => res.text()).subscribe(

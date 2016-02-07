@@ -12,6 +12,13 @@ namespace angular2sandbox
         {
             services.AddMvc();
             services.AddLogging();
+            // Add Cors support to the service
+            // TODO: I'm not sure that this is needed but I will keep it until the api proxy works
+            services.AddCors(options =>
+            {
+                options.AddPolicy("mypolicy",
+                    builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+            });
         }
 
         public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
@@ -35,8 +42,10 @@ namespace angular2sandbox
 
             app.UseMvc(routes =>
             {
-                routes.MapRoute(name: "default", template: "{controller=Home}/{action=Index}/{id?}");
+                routes.MapRoute(name: "default", template: "api/{controller=Home}/{action=Index}/{id?}");
             });
+
+            app.UseCors("mypolicy");
         }
     }
 }

@@ -163,7 +163,6 @@ module.exports = {
     emitErrors: true,
     failOnHint: true
   },
-  // don't use devServer for production
 
   // we need this due to problems with es6-shim
   node: {

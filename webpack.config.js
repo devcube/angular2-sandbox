@@ -104,7 +104,10 @@ module.exports = {
     host: metadata.host,
     // contentBase: 'src/',
     historyApiFallback: true,
-    watchOptions: { aggregateTimeout: 300, poll: 1000 }
+    watchOptions: { aggregateTimeout: 300, poll: 1000 },
+    proxy: {
+           '/api/*': 'http://localhost:5004/'
+       }
   },
   // we need this due to problems with es6-shim
   node: { global: 'window', progress: false, crypto: 'empty', module: false, clearImmediate: false, setImmediate: false }

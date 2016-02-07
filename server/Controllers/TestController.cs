@@ -1,4 +1,5 @@
 using Microsoft.AspNet.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Text.RegularExpressions;
 using angular2sandbox.Models;
@@ -7,8 +8,17 @@ namespace angular2sandbox.Controllers
 {
   public class TestController : Controller
   {
+    ILogger<TestController> _logger;
+
+    public TestController(ILogger<TestController> logger)
+    {
+      _logger = logger;
+      _logger.LogCritical("Logger: TestController constructor");
+    }
+
     public string Test()
     {
+      _logger.LogCritical("Logger: calling /api/test/test");
       return "TestController is working!";
     }
 
