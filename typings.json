@@ -12,6 +12,6 @@
     "node": "github:DefinitelyTyped/DefinitelyTyped/node/node.d.ts#8cf8164641be73e8f1e652c2a5b967c7210b6729",
     "sweetalert": "github:DefinitelyTyped/DefinitelyTyped/sweetalert/sweetalert.d.ts#9616e043e67b01f874ec8089a065fdc4964f5857",
     "webpack": "github:DefinitelyTyped/DefinitelyTyped/webpack/webpack.d.ts#95c02169ba8fa58ac1092422efbd2e3174a206f4",
-    "zone": "github:angular/DefinitelyTyped/zone/zone.d.ts#31e7317c9a0793857109236ef7c7f223305a8aa9"
+    "zone": "github:DefinitelyTyped/DefinitelyTyped/zone/zone.d.ts#31e7317c9a0793857109236ef7c7f223305a8aa9"
   }
 }
