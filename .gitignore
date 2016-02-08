@@ -1,6 +1,9 @@
 # gitkeep (http://stackoverflow.com/questions/987142/make-gitignore-ignore-everything-except-a-few-files)
 !.gitkeep
 
+# Azure
+AzureDeploy.ps1
+
 # ASP.NET Core
 project.lock.json
 server/wwwroot/*
