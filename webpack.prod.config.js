@@ -1,5 +1,4 @@
 var path = require('path');
-var zlib = require('zlib');
 var webpack = require('webpack');
 var ProvidePlugin = require('webpack/lib/ProvidePlugin');
 var DefinePlugin = require('webpack/lib/DefinePlugin');
@@ -7,7 +6,6 @@ var OccurenceOrderPlugin = require('webpack/lib/optimize/OccurenceOrderPlugin');
 var DedupePlugin = require('webpack/lib/optimize/DedupePlugin');
 var UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
 var CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin');
-var CompressionPlugin = require('compression-webpack-plugin');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
@@ -114,7 +112,7 @@ module.exports = {
       filename: 'polyfills.[chunkhash].bundle.js',
       chunks: Infinity
     }),
-    new ExtractTextPlugin("styles.css"),
+    new ExtractTextPlugin("styles.[contenthash].css"),
     new CopyWebpackPlugin([
       {
         from: 'src/assets',
@@ -123,7 +121,7 @@ module.exports = {
     ]),
     new HtmlWebpackPlugin({
       template: 'src/index.html',
-      hash: true
+      hash: false
     }),
     new DefinePlugin({
       'process.env': {
@@ -151,11 +149,6 @@ module.exports = {
       mangle: false,
       compress: { screw_ie8: true },
       comments: false
-    }),
-    new CompressionPlugin({
-      algorithm: gzipMaxLevel,
-      regExp: /\.css$|\.html$|\.js$|\.map$/,
-      threshold: 2 * 1024
     })
   ],
   // Other module loader config
@@ -176,10 +169,6 @@ module.exports = {
 };
 
 // Helper functions
-function gzipMaxLevel(buffer, callback) {
-  return zlib['gzip'](buffer, { level: 9 }, callback)
-}
-
 function root(args) {
   args = Array.prototype.slice.call(arguments, 0);
   return path.join.apply(path, [__dirname].concat(args));

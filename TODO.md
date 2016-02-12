@@ -10,6 +10,9 @@ Tips? Links?
 > Kestrel will never support it either. Think of kestrel as a really dumb byte pump that handles http.
 > nginx does not support it either, the following link is a module:
 > https://coderwall.com/p/2dx_mq/pre-compress-css-js-resources-for-nginx
+* http://stackoverflow.com/questions/27836176/asp-net-vnext-enable-compression-to-iis-8-on-azure/28759054#28759054
+* Azure Web Apps does gzip compression out of the box
+  http://stackoverflow.com/questions/34006236/azure-web-app-not-using-gzip-compression
 
 ## Question about webpack production bundles
 https://github.com/AngularClass/angular2-webpack-starter/issues/307

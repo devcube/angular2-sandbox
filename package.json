@@ -5,8 +5,10 @@
   "homepage": "https://github.com/devcube/angular2-sandbox",
   "scripts": {
     "clean:wwwroot": "rimraf server/wwwroot",
+    "create:wwwroot": "mkdirp server/wwwroot",
+    "create:gitkeep": "touch server/wwwroot/.gitkeep",
     "build:dev": "webpack --progress --profile --colors --display-error-details --display-cached",
-    "prebuild:prod": "npm run clean:wwwroot",
+    "prebuild:prod": "npm run clean:wwwroot && npm run create:wwwroot && npm run create:gitkeep",
     "build:prod": "webpack --config webpack.prod.config.js --progress --profile --colors --display-error-details --display-cached",
     "stats:prod": "webpack --config webpack.prod.config.js --profile --json > webpack.json",
     "server:dev": "webpack-dev-server --progress --profile --colors --display-error-details --display-cached  --content-base src/",
@@ -23,7 +25,6 @@
     "jquery": "^2.2.0"
   },
   "devDependencies": {
-    "compression-webpack-plugin": "^0.3.0",
     "copy-webpack-plugin": "^1.1.1",
     "css-loader": "^0.23.1",
     "es6-promise-loader": "^1.0.1",
@@ -32,6 +33,7 @@
     "html-webpack-plugin": "^1.7.0",
     "json-loader": "^0.5.4",
     "marked": "^0.3.5",
+    "mkdirp": "^0.5.1",
     "raw-loader": "0.5.1",
     "reflect-metadata": "0.1.2",
     "replace": "^0.3.0",
