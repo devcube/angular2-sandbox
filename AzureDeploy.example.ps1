@@ -5,6 +5,9 @@
 # And this article for subtree push of server folder: http://stackoverflow.com/questions/28151672/git-push-only-a-subdirectory-to-a-remote-branch
 git subtree push --prefix server azure master
 
+# Build webpack files for production
+npm run build:prod
+
 # Since the wwroot contents is not checked into git, upload these files using ftp
 
 # https://gallery.technet.microsoft.com/scriptcenter/PowerShell-FTP-Client-db6fe0cb
@@ -30,8 +33,6 @@ $FTPCredential = New-Object System.Management.Automation.PSCredential($FTPUserna
 Set-FTPConnection -Credentials $FTPCredential -Server $FTPServer -Session MySession *>$null
 $Session = Get-FTPConnection -Session MySession
 
-
-
 # Remove all files (skip directories since they probably contain contents) except web.config (since that file is generated, not uploaded by this script)
 " "
 "Removing all files (not directories) from FTP/site/wwwroot, except web.config"
@@ -55,7 +56,7 @@ Get-FTPChildItem -Path $FTPPath -Recurse -Session $session | where-object {$_.Na
 # Upload all files from server/wwwroot to FTP/site/wwwroot
 " "
 "Uploading all files from server/wwwroot to FTP/site/wwwroot"
-Get-ChildItem -File -Recurse -Path $LocalPath |
+Get-ChildItem -File -Recurse -Path $LocalPath | where-object {$_.Name -ne ".gitkeep"} |
 % {
   $RelativePathToFile = ($_.FullName -replace [regex]::Escape($LocalUploadRoot), "") # e.g. c:\git\myproject\server\wwwroot\assets\robots.txt => assets\robots.txt
   $UploadFolder = ($RelativePathToFile -replace [regex]::Escape($_.Name), "") # e.g. assets\robots.txt => assets\
