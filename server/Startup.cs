@@ -1,5 +1,4 @@
 using Microsoft.AspNet.Builder;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -23,21 +22,10 @@ namespace angular2sandbox
         public void Configure(IApplicationBuilder app, ILoggerFactory loggerFactory)
         {
             var logger = loggerFactory.CreateLogger<Startup>();
-            var loggingConfiguration = new ConfigurationBuilder().AddJsonFile("logging.json").Build();
-            loggerFactory.AddConsole(loggingConfiguration);
-            loggingConfiguration.ReloadOnChanged("logging.json");
-
-            var cre = new CompressedResourceExtender(logger);
+            loggerFactory.AddConsole();
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
-            // TODO: Testing different approaches to send gzipped static files, none of them is working yet
-            // app.Use(typeof(GzipMiddleware));
-            app.UseCompression();
-            // app.UseStaticFiles(new StaticFileOptions
-            //    {
-            //        OnPrepareResponse = cre.ServePrecompressedFiles
-            //    });
 
             app.UseMvc(routes =>
             {
