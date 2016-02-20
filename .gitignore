@@ -10,6 +10,7 @@ server/wwwroot/*
 !server/wwwroot/.gitkeep
 
 # Webpack
+devbuild/
 webpack.json
 
 # Logs
