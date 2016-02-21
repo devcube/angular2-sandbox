@@ -12,16 +12,16 @@
     "prebuild:prod": "npm run clean:wwwroot && npm run create:wwwroot && npm run create:gitkeep",
     "build:prod": "webpack --config webpack.prod.config.js --progress --profile --colors --display-error-details --display-cached",
     "stats:prod": "webpack --config webpack.prod.config.js --profile --json > webpack.json",
-    "server:dev": "webpack-dev-server --progress --profile --colors --display-error-details --display-cached  --content-base src/",
+    "server:dev": "webpack-dev-server --hot --inline --progress --profile --colors --watch --display-error-details --display-cached  --content-base src/",
     "start": "npm run server:dev"
   },
   "dependencies": {
-    "angular2": "2.0.0-beta.6",
+    "angular2": "2.0.0-beta.7",
     "es6-promise": "^3.1.2",
     "es6-shim": "^0.33.3",
     "es7-reflect-metadata": "^1.5.5",
-    "rxjs": "5.0.0-beta.0",
-    "zone.js": "0.5.14",
+    "rxjs": "5.0.0-beta.2",
+    "zone.js": "0.5.15",
     "bootstrap": "^3.3.6",
     "jquery": "^2.2.0"
   },

@@ -23,6 +23,33 @@ document.addEventListener('DOMContentLoaded', function main() {
 
 });
 
+
+/*
+ * Modified for using hot module reload
+ */
+
+// typescript lint error 'Cannot find name "module"' fix
+declare let module: any;
+
+// activate hot module reload
+if (module.hot) {
+
+  // bootstrap must not be called after DOMContentLoaded,
+  // otherwise it cannot be rerenderd after module replacement
+  //
+  // for testing try to comment the bootstrap function,
+  // open the dev tools and you'll see the reloader is replacing the module but cannot rerender it
+  bootstrap(App, [
+      ...ENV_PROVIDERS,
+      ...HTTP_PROVIDERS,
+      ...ROUTER_PROVIDERS,
+      provide(LocationStrategy, { useClass: HashLocationStrategy })
+    ])
+    .catch(err => console.error(err));
+
+  module.hot.accept();
+}
+
 // For vendors for example jQuery, Lodash, angular2-jwt
 // Import them in polyfills.ts to bundle all polyfills and vendors in the same chunk
 // This helps us keep the app bundle as small as possible, thus maximizing cache effectiveness
