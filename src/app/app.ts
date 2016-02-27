@@ -16,8 +16,8 @@ import {Home} from './home/home';
 
 @RouteConfig([
   { path: '/home', component: Home, name: 'Home' },
-  // Async load a component using Webpack's require with es6-promise-loader
-  { path: '/about', loader: () => require('./about/about')('About'), name: 'About' },
+  // Async load a component using Webpack's require with es6-promise-loader and webpack `require`
+  { path: '/about', loader: () => require('es6-promise!./about/about')('About'), name: 'About' },
   { path: '/**', redirectTo: ['Home'] }
 ])
 

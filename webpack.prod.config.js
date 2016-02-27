@@ -1,5 +1,5 @@
-var path = require('path');
 var webpack = require('webpack');
+var helpers = require('./helpers');
 var ProvidePlugin = require('webpack/lib/ProvidePlugin');
 var DefinePlugin = require('webpack/lib/DefinePlugin');
 var OccurenceOrderPlugin = require('webpack/lib/optimize/OccurenceOrderPlugin');
@@ -22,11 +22,11 @@ var metadata = {
   ENV: ENV
 };
 
-module.exports = {
+module.exports = helpers.validate({
   // static data for index.html
   metadata: metadata,
-  // for faster builds use 'eval'
-  devtool: 'eval',
+  devtool: 'source-map',
+  cache: false,
   debug: false,
 
   entry: {
@@ -36,14 +36,14 @@ module.exports = {
 
   // Config for our build files
   output: {
-    path: root('server/wwwroot'),
+    path: helpers.root('server/wwwroot'),
     filename: '[name].[chunkhash].bundle.js',
     chunkFilename: '[id].[chunkhash].chunk.js'
   },
 
   resolve: {
     cache: false,
-    extensions: prepend(['.ts', '.js', '.json', '.css', '.html', '.ttf', '.eot', '.svg', '.woff', '.woff2'], '.async') // ensure .async.ts etc also works
+    extensions: ['', '.ts','.js']
   },
 
   module: {
@@ -52,24 +52,18 @@ module.exports = {
         test: /\.ts$/,
         loader: 'tslint-loader',
         exclude: [
-          root('node_modules')
+          helpers.root('node_modules')
         ]
       },
       {
         test: /\.js$/,
-        loader: "source-map-loader",
+        loader: 'source-map-loader',
         exclude: [
-          root('node_modules/rxjs')
+          helpers.root('node_modules/rxjs')
         ]
       }
     ],
     loaders: [
-      // Support Angular 2 async routes via .async.ts
-      {
-        test: /\.async\.ts$/,
-        loaders: ['es6-promise-loader', 'ts-loader'],
-        exclude: [/\.(spec|e2e)\.ts$/]
-      },
       // Support for .ts files.
       {
         test: /\.ts$/,
@@ -81,25 +75,45 @@ module.exports = {
             'noEmitHelpers': true,
           }
         },
-        exclude: [/\.(spec|e2e|async)\.ts$/]
+        exclude: [
+          /\.(spec|e2e)\.ts$/
+        ]
       },
 
       // Support for *.json files.
-      { test: /\.json$/, loader: 'json-loader' },
+      {
+        test: /\.json$/,
+        loader: 'json-loader'
+      },
 
       // Support for CSS as raw text
-      { test: /\.css$/, loader: 'raw-loader', include: [ root('src/app') ] },
+      {
+        test: /\.css$/,
+        loader: 'raw-loader',
+        include: [ helpers.root('src/app') ]
+      },
 
       // Support for CSS as loaded/bundled files (this is useful to cover all css files that aren't included otherwise, such as bootstrap.css)
-      { test: /\.css$/, loader: ExtractTextPlugin.extract("style-loader", "css-loader"), exclude: [ root('src/app') ] },
+      {
+        test: /\.css$/,
+        loader: ExtractTextPlugin.extract("style-loader", "css-loader"),
+        exclude: [ helpers.root('src/app') ]
+      },
 
       // support for .html as raw text
-      { test: /\.html$/, loader: 'raw-loader' },
+      {
+        test: /\.html$/,
+        loader: 'raw-loader',
+        exclude: [
+          helpers.root('src/index.html')
+        ]
+      },
 
       // support for these files from e.g. bootstrap
-      { test: /\.(ttf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/, loader: 'file-loader' }
-
-      // if you add a loader include the file extension
+      {
+        test: /\.(ttf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
+        loader: 'file-loader'
+      }
     ]
   },
 
@@ -138,8 +152,7 @@ module.exports = {
       '__decorate': 'ts-helper/decorate',
       '__awaiter': 'ts-helper/awaiter',
       '__extends': 'ts-helper/extends',
-      '__param': 'ts-helper/param',
-      'Reflect': 'es7-reflect-metadata/src/global/browser'
+      '__param': 'ts-helper/param'
     }),
     new UglifyJsPlugin({
       beautify: false,
@@ -150,11 +163,22 @@ module.exports = {
       compress: { screw_ie8: true },
       comments: false
     })
+    // Do not compress using zlib or gzip since Azure WebApps gzip automatically
+    // Azure WebApps does not honor prezipped resources by default
   ],
   // Other module loader config
   tslint: {
     emitErrors: true,
-    failOnHint: true
+    failOnHint: true,
+    resourcePath: 'src'
+  },
+
+  htmlLoader: {
+    minimize: true,
+    removeAttributeQuotes: false,
+    caseSensitive: true,
+    customAttrSurround: [ [/#/, /(?:)/], [/\*/, /(?:)/], [/\[?\(?/, /(?:)/] ],
+    customAttrAssign: [ /\)?\]?=/ ]
   },
 
   // we need this due to problems with es6-shim
@@ -166,20 +190,4 @@ module.exports = {
     clearImmediate: false,
     setImmediate: false
   }
-};
-
-// Helper functions
-function root(args) {
-  args = Array.prototype.slice.call(arguments, 0);
-  return path.join.apply(path, [__dirname].concat(args));
-}
-
-function prepend(extensions, args) {
-  args = args || [];
-  if (!Array.isArray(args)) { args = [args] }
-  return extensions.reduce(function (memo, val) {
-    return memo.concat(val, args.map(function (prefix) {
-      return prefix + val
-    }));
-  }, ['']);
-}
+});
